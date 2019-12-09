@@ -32,17 +32,3 @@ function compute(num){
     computes = num * 5;
     $('h1').html(computes);
 }
-function compute(number) {
-    var result = number * 5;
-    if(number == 0) {
-        progressBar(result);
-    }else {
-        progressBar(result + 25);
-    }
-    $('#show').html(result);
-}
-
-function progressBar(pro) {
-    $('#progressBar').width(pro + "%");
-    $('#progressBar').html(pro + "%");
-}

@@ -13,61 +13,34 @@
 <body>
     <div class="container mt-3">
         <div class="row">
-            <div class="col-3"></div>
-            <div class="col-6">
+            <div class="col-4"></div>
+            <div class="col-4">
                 <form action="#">
                     <div class="form-group">
                         <select class="form-control" id="recipe">
                             <option value="" disabled selected> Select a recipe </option>
-                            <option value="1"> Apple </option>
-                            <option value="2"> Banana </option>
-                            <option value="3"> Chherry</option>
+                            <option value="1"> Nom Pom </option>
+                            <option value="2"> Chocolate cake </option>
+                            <option value="3"> Avocado Shake (Toek KaLok) </option>
                         </select>
                     </div>
                 </form>
                 <div id="done"></div>
             </div>
-            <div class="col-3"></div>
+            <div class="col-4"></div>
         </div>
-        <div class="row">
-            <div class="col-3"></div>
-            <div class="col-3 ">
-                Number of person
-            </div>
-            <div class="col-3">
-                <div class="input-group mb-3">
-                    <div class="input-group-append">
-                        <button class="btn btn-danger" type="button" id="button"> - </button>
-                    </div>
-                    <input type="number" class="form-control" disabled id="number" value="0">
-                    <div class="input-group-append">
-                        <button class="btn btn-success" type="submit" id="submit"> + </button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-3"></div>
-        </div>
-        <div class="row">
-            <div class="col-6">
-                <h3>ingredient</h3>
-                <table class="table table-boderedless">
-                    <tr id="ingredient">
-
-                    </tr>
-                </table>
-            </div>
-            <div class="col-6">
-                <h3>Instruction</h3>
-            </div>
-        </div>
+    <div class="container" id="getname">
+        
+    </div>
+    <div class="container" id="ingredient">
+        
+    </div>
     </div>
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/project.js"></script>
-    <script src="api/api.js"></script>
     <script src="count.js"></script>
 </body>
 
 </html>
-
 
 
