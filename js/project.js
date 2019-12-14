@@ -1,131 +1,151 @@
-var url = "https://raw.githubusercontent.com/ronanogor/jquery-project/master/database-v1.json";
-$(document).ready(function(){
-    $('#recipe').on('change', function(){
-        var recipe = $('#recipe').val();
-        choose(recipe);
-        // reuest api
-          $.ajax({
-          dataType: 'json',
-          url: url,
-          success : function(myData){
-            var result = "";
-            myData.recipes.forEach(element => {
-              getIngredient(element.ingredients);
-              if( element.id == 0 ){
-                result +=`
-                  <div class="row" >
-                    <div class="col-3"></div>
-                    <div class="col-3">
-                      <h2>${element.name}</h2>
-                    </div>
-                    <div class="col-3">
-                        <img src="${element.iconUrl}" class="img-fluid">
-                    </div>
-                    <div class="col-3"></div>
-                  </div> 
-                  <div class="row mt-3">
-                    <div class="col-3"></div>
-                    <div class="col-3 ">
-                        Number of person
-                    </div>
-                    <div class="col-3">
-                        <div class="input-group mb-3">
-                          <div class="input-group-append">
-                            <button class="btn btn-danger" type="button" id="button"> - </button>
-                          </div>
-                          <input type="number" class="form-control" disabled id="number" value="0">
-                          <div class="input-group-append">
-                            <button class="btn btn-success" type="submit" id="submit"> + </button>
-                          </div>
-                        </div>
-                        <h1 class="display-1 text-center"  id="show"></h1>
-                      </div>
-                      <div class="col-3"></div>
-                  </div>
-                  <div class="row" >
-        
-                    <div class="col-6">
-                      <h3>ingredient</h3>
-                      <table class="table table-boderedless">
-                          <tr>
-                            <td></td>
-                          </tr>
-                      </table>
-                    </div>
-                    <div class="col-6">
-                        <h3>Instruction</h3>
-                    </div>
-                </div>
-                `;
-              }
-            });
-            $('#getname').html(result);
-          },
-        error: () => console.log("Error"),
-      });     
-      
-    });
+// get url and return url to getUrl()
+function getUrl() {
+  var url = "https://raw.githubusercontent.com/radytrainer/test-api/master/test.json";
+  return url;
+}
+
+// 
+$(document).ready(function() {
+  requestApi();
+  $('#recipe').on('change', () => {
+    var choseRecipe = $('#recipe').val();
+    getRecipe(choseRecipe);
+  })
 });
 
-function choose(fruit) {
-  switch(parseInt(fruit)) {
-      case  1:
-          console.log("Apple");
-          break;
-      case  2:
-          console.log("Banana");
-          break;
-      case  3:
-          console.log("Chherry");
-          break;
-  }
-}
-// get Apple
-var ge = () => {
-var apple = "I love apple";
-PrintOut(apple);
+// get api by json
+function requestApi() {
+  $.ajax ({
+    dataType: "json",
+    url: getUrl(),
+    success: (data) => choseRecipe(data.recipes),
+    error: () => console.log("Cannot get data"),
+  });
 }
 
-// get banana
-var getBanana = () => {
-var banana = "I love Banana";
-PrintOut(banana);
-
+// all data store array and loop recipe for choose recipe in selete option
+var allData = [];
+function choseRecipe(recipe) {
+  allData = recipe;
+  var option = "";
+  recipe.forEach(element => {
+    option +=`<option value="${element.id}">${element.name}</option>`;
+  });
+  $('#recipe').append(option);
 }
 
-// get chherry
-var getChherry = () => {
-var chherry = "I love Chherry";
-PrintOut(chherry);
-
-}
-
-// printOut  to chherry
-var printOut = (out) => {
-  $('#done').html(out);
-}
-
-// get ingredient
-var getIngredient = (ing) => {
-  ing.forEach(item => {
-      conputeHTML(item);
+// get recipe
+function getRecipe(id) {
+  allData.forEach(item => {
+    if(item.id == id){
+      eachRecipe(item.name, item.iconUrl);
+      eachIngredient(item.ingredients);
+      eachStep(item.instructions);
+      eachGuest(item.nbGuests);
+    }
   })
 }
 
-// computer to html
-var conputeHTML = (display) => {
-  var compute = "";
-  compute +=  `             
-      <tr>
-          <td><img src="${display.iconUrl}" width="100"></td>
-          <td>${display.name}</td>
-          <td>${display.quantity}</td>
-          <td>${display.unit[0]}</td>
-      </tr>
+// get name and img from recipes
+function eachRecipe(name, img) {
+  var result = "";
+  result += `
+    <div class="col-3"></div>
+    <div class="col-3"><h3>${name}</h3></div>
+    <div class="col-3"><img src="${img}" width="200" class="img-fluid"></div>     
+    <div class="col-3"></div>
   `;
-  printOut(compute);
+  $('#recipeResult').html(result);
 }
-// print out
-printOut = (out) => {
-  $('#ingredient').append(out);
-} 
+
+// get number of guest
+function eachGuest(nbGuests) {
+
+  // show html input number of guest
+  var text = "";
+  text +=`
+    <h5>Number of person<h5>
+  `;
+  $('#text').html(text);
+  var result = "";
+  result +=`
+    <div class="input-group mb-3">
+    <div class="input-group-append ">
+      <button type="button" id="button"> &#8722; </button>
+    </div>
+    <input type="number" class="form-control btn btn-outline-primary " disabled id="number" value="${nbGuests}">
+    <div class="input-group-append">
+      <button type="submit" id="submit"> &#43; </button>
+    </div>
+  `;
+  $('#numberGuest').html(result);
+
+  // when onclick on button (-) it decrease of guest and (+) it increase of guest
+  $('#submit').on('click', function () {
+    var number = $('#number').val();
+    increaseNumber(number);
+
+  });
+  $('#button').on('click', function () {
+    var number = $('#number').val();
+    discreaseNumber(number);
+  });
+}
+
+// function increase of numbers
+function increaseNumber(numbers) {
+  var add = parseInt(numbers) + 1;
+  if (add <= 15) {
+    $('#number').val(add);
+    compute (add);
+  }
+}
+
+// when increase and discrease of guest it make quantity follow
+
+
+// // function discrease of numbers
+function discreaseNumber(negative) {
+  var minus = parseInt(negative) - 1;
+  if (minus >= 0) {
+    $('#number').val(minus);
+    compute (minus);
+  }
+}
+
+// function compute for calulate number of guest
+function compute(num){
+  computes = num * 5;
+  
+}
+
+// loop and show ingredients
+function eachIngredient(ingredients){
+  var result = "";
+  ingredients.forEach(element => {
+    result +=`
+      <tr>
+          <th><img src="${element.iconUrl}" width="100"></th>
+          <th>${element.name}</th>
+          <th>${element.quantity}</th>
+          <th>${element.unit[0]}</th>
+      </tr>
+    `;
+    $('#ingredient').html('Ingredients');
+    $('#ingredients').html(result);
+  })
+}
+
+// loop step from instruction
+function eachStep(instructions){
+  var split = instructions.split("<step>");
+  var result = "";
+  for(i = 1; i < split.length; i++){
+    result +=`
+      <h6 class="text text-info">Step ${i}</h6>
+      <p>${split[i]}</p>
+    `;
+    }
+  $('#step').html(result);
+  $('#instruchtion').html('Instruchtions');
+}
