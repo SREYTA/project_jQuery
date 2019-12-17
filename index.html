@@ -9,8 +9,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 
-<body>
+<body class="alert-danger ">
     <div class="container mt-5">
+
+        <!-- Chooose recipe -->
         <div class="row">
             <div class="col-4"></div>
             <div class="col-4">
@@ -20,24 +22,34 @@
             </div>
             <div class="col-4"></div>
         </div>
+        <!-- End choose recipe -->
+
+        <!-- show name and image -->
         <div class="row mt-3" id="recipeResult"></div>
+        <!-- End  show name and image -->
+        <!-- form increase and dicrease of numbers -->
         <div class="row mt-5">
             <div class="col-3"></div>
             <div class="col-3" id="text"></div>
             <div class="col-3" id="numberGuest"></div>
             <div class="col-3"></div>
         </div>
+        <!-- End form increase and dicrease of numbers -->
+        
+        <!-- show ingredient and instruction -->
         <div class="row mt-5">
-            <div class="col-6">
+            <div class="col-5">
                 <h4 id="ingredient" class="text-center"></h4>
                 <table class="table table-bordered mt-5" id="ingredients"></table>
             </div>
-            <div class="bg bg-primary" id="rule" style="height: 300px"></div>
-            <div class="col-6">
+            <span class="col-2" id="ruler"></span>
+            <div class="col-5">
                 <h4 id="instruchtion" class="text-center"></h4>
                 <table id="step" class="mt-5"></table>
             </div>
         </div>
+        <!-- End show ingredient and instruction -->
+        
     </div>
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/project.js"></script>

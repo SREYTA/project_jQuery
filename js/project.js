@@ -4,7 +4,7 @@ function getUrl() {
   return url;
 }
 
-// 
+// call api and use it
 $(document).ready(function() {
   requestApi();
   $('#recipe').on('change', () => {
@@ -38,16 +38,19 @@ function choseRecipe(recipe) {
 function getRecipe(id) {
   allData.forEach(item => {
     if(item.id == id){
-      eachRecipe(item.name, item.iconUrl);
-      eachIngredient(item.ingredients);
-      eachStep(item.instructions);
-      eachGuest(item.nbGuests);
+      otherRecipe(item.name, item.iconUrl);
+      otherIngredient(item.ingredients);
+      otherStep(item.instructions);
+      otherGuest(item.nbGuests);
+      otherQuantity = item;
+      //get OldGuest
+      oldGuest = item.nbGuests;
     }
   })
 }
 
 // get name and img from recipes
-function eachRecipe(name, img) {
+function otherRecipe(name, img) {
   var result = "";
   result += `
     <div class="col-3"></div>
@@ -59,7 +62,7 @@ function eachRecipe(name, img) {
 }
 
 // get number of guest
-function eachGuest(nbGuests) {
+function otherGuest(nbGuests) {
 
   // show html input number of guest
   var text = "";
@@ -70,7 +73,7 @@ function eachGuest(nbGuests) {
   var result = "";
   result +=`
     <div class="input-group mb-3">
-    <div class="input-group-append ">
+    <div class="input-group-append">
       <button type="button" id="button"> &#8722; </button>
     </div>
     <input type="number" class="form-control btn btn-outline-primary " disabled id="number" value="${nbGuests}">
@@ -84,7 +87,7 @@ function eachGuest(nbGuests) {
   $('#submit').on('click', function () {
     var number = $('#number').val();
     increaseNumber(number);
-
+    
   });
   $('#button').on('click', function () {
     var number = $('#number').val();
@@ -97,11 +100,33 @@ function increaseNumber(numbers) {
   var add = parseInt(numbers) + 1;
   if (add <= 15) {
     $('#number').val(add);
-    compute (add);
+    counter (add);
+    getQuest($("#number").val());
   }
 }
 
 // when increase and discrease of guest it make quantity follow
+// function for new quanlity
+function getQuest(quest) {
+  var quantities;
+  var newQuantity;
+  var result = "";
+  otherQuantity.ingredients.forEach(element => {
+    var {quantity,iconUrl,name,unit} = element;
+    quantities = quantity/oldGuest;
+    newQuantity = quantities*quest;
+    result += `
+   
+    <tr>
+          <th><img src="${iconUrl}" width="100"></th>
+          <th>${name}</th>
+          <th>${newQuantity}</th>
+          <th>${unit[0]}</th>
+      </tr>
+    `;
+  });
+  $("#ingredients").html(result);
+}
 
 
 // // function discrease of numbers
@@ -109,26 +134,26 @@ function discreaseNumber(negative) {
   var minus = parseInt(negative) - 1;
   if (minus >= 0) {
     $('#number').val(minus);
-    compute (minus);
+    counter (minus);
+    getQuest($("#number").val());
   }
 }
 
 // function compute for calulate number of guest
-function compute(num){
-  computes = num * 5;
-  
+function counter(num){
 }
 
 // loop and show ingredients
-function eachIngredient(ingredients){
+function otherIngredient(ingredients){
   var result = "";
   ingredients.forEach(element => {
+    const {iconUrl, name, quantity, unit} = element;
     result +=`
       <tr>
-          <th><img src="${element.iconUrl}" width="100"></th>
-          <th>${element.name}</th>
-          <th>${element.quantity}</th>
-          <th>${element.unit[0]}</th>
+          <th><img src="${iconUrl}" width="100"></th>
+          <th>${name}</th>
+          <th>${quantity}</th>
+          <th>${unit[0]}</th>
       </tr>
     `;
     $('#ingredient').html('Ingredients');
@@ -137,9 +162,14 @@ function eachIngredient(ingredients){
 }
 
 // loop step from instruction
-function eachStep(instructions){
+function otherStep(instructions){
   var split = instructions.split("<step>");
   var result = "";
+  var ruler = "";
+  ruler +=`
+    <div class="border-primary border-right" style="height: 100%"></div>
+    `;
+  $('#ruler').html(ruler);
   for(i = 1; i < split.length; i++){
     result +=`
       <h6 class="text text-info">Step ${i}</h6>
