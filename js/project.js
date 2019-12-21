@@ -10,9 +10,11 @@ $(document).ready(function() {
   $('#recipe').on('change', () => {
     var choseRecipe = $('#recipe').val();
     getRecipe(choseRecipe);
+    $('#card').show();
   })
 });
 
+$('#card').hide();
 // get api by json
 function requestApi() {
   $.ajax ({
@@ -43,7 +45,6 @@ function getRecipe(id) {
       otherStep(item.instructions);
       otherGuest(item.nbGuests);
       otherQuantity = item;
-      //get OldGuest
       oldGuest = item.nbGuests;
     }
   })
@@ -83,7 +84,7 @@ function otherGuest(nbGuests) {
   `;
   $('#numberGuest').html(result);
 
-  // when onclick on button (-) it decrease of guest and (+) it increase of guest
+  // when onclick on button (-) it discrease of guest and (+) it increase of guest
   $('#submit').on('click', function () {
     var number = $('#number').val();
     increaseNumber(number);
@@ -102,9 +103,9 @@ function increaseNumber(numbers) {
     $('#number').val(add);
     counter (add);
     getQuest($("#number").val());
+    
   }
 }
-
 // when increase and discrease of guest it make quantity follow
 // function for new quanlity
 function getQuest(quest) {
