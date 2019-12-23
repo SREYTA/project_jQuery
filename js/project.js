@@ -9,11 +9,13 @@ $(document).ready(function() {
   requestApi();
   $('#recipe').on('change', () => {
     var choseRecipe = $('#recipe').val();
-    getRecipe(choseRecipe);
+    getAllRecipe(choseRecipe);
+    // show card on the html
     $('#card').show();
   })
 });
 
+// hide card on the html
 $('#card').hide();
 // get api by json
 function requestApi() {
@@ -36,20 +38,22 @@ function choseRecipe(recipe) {
   $('#recipe').append(option);
 }
 
-// get recipe
-function getRecipe(id) {
-  allData.forEach(item => {
-    if(item.id == id){
-      otherRecipe(item.name, item.iconUrl);
-      otherIngredient(item.ingredients);
-      otherStep(item.instructions);
-      otherGuest(item.nbGuests);
-      otherQuantity = item;
-      oldGuest = item.nbGuests;
+// get all recipe
+function getAllRecipe(id) {
+  allData.forEach(el => {
+    if(el.id == id){
+      // get name and iconUrl from api
+      otherRecipe(el.name, el.iconUrl);
+      // get ingredients from api
+      otherIngredient(el.ingredients);
+      otherStep(el.instructions);
+      otherGuest(el.nbGuests);
+      otherQuantity = el;
+      oldGuest = el.nbGuests;
     }
   })
 }
-
+s
 // get name and img from recipes
 function otherRecipe(name, img) {
   var result = "";
@@ -101,11 +105,10 @@ function increaseNumber(numbers) {
   var add = parseInt(numbers) + 1;
   if (add <= 15) {
     $('#number').val(add);
-    counter (add);
     getQuest($("#number").val());
-    
   }
 }
+
 // when increase and discrease of guest it make quantity follow
 // function for new quanlity
 function getQuest(quest) {
@@ -117,7 +120,6 @@ function getQuest(quest) {
     quantities = quantity/oldGuest;
     newQuantity = quantities*quest;
     result += `
-   
     <tr>
           <th><img src="${iconUrl}" width="100"></th>
           <th>${name}</th>
@@ -129,19 +131,13 @@ function getQuest(quest) {
   $("#ingredients").html(result);
 }
 
-
-// // function discrease of numbers
+// function discrease of numbers
 function discreaseNumber(negative) {
   var minus = parseInt(negative) - 1;
   if (minus >= 0) {
     $('#number').val(minus);
-    counter (minus);
     getQuest($("#number").val());
   }
-}
-
-// function compute for calulate number of guest
-function counter(num){
 }
 
 // loop and show ingredients
