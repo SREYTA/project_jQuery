@@ -59,9 +59,8 @@ function otherRecipe(name, img) {
   var result = "";
   result += `
     <div class="col-3"></div>
-    <div class="col-3"><h3>${name}</h3></div>
-    <div class="col-3"><img src="${img}" width="200" class="img-fluid"></div>     
-    <div class="col-3"></div>
+    <div class="col-3"><h3 class=" text-right mt-5">${name}</h3></div>
+    <div class="col-6"><img src="${img}" width="200" class="img-fluid img-thumbnail float-left"></div>     
   `;
   $('#recipeResult').html(result);
 }
